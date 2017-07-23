@@ -14,7 +14,7 @@ public:
 private:
     int asd;
     float acceleration = 0.10;
-    float drag = 0.00;
+    float drag = 0.01;
     float xspeed = 0;
     float yspeed = 0;
 };

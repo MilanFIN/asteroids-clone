@@ -26,7 +26,6 @@ void Player::move()
         yspeed += drag;
     }
 
-    std::cout << x() << " " << y() << std::endl;
 
     if (y() < -160){
         setPos(x(), 160);
@@ -40,12 +39,26 @@ void Player::move()
     if (x() > 210){
         setPos(-200, y());
     }
+
+
 }
 
 void Player::accelerate()
 {
     xspeed += acceleration * std::sin(PI/180.00*rotation());
+    if (xspeed > 10.0){
+        xspeed = 10.0;
+    }
+    else if (xspeed < -10.0){
+        xspeed = -10.0;
+    }
+    std::cout << xspeed << std::endl;
 
     yspeed -= acceleration * std::cos(PI/180.00*rotation());
-
+    if (yspeed > 10.0){
+        yspeed = 10.0;
+    }
+    else if (yspeed < -10.0){
+        yspeed = -10.0;
+    }
 }
