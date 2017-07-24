@@ -6,6 +6,8 @@
 #include <QGraphicsView>
 #include <QgraphicsItem>
 #include "player.h"
+#include "asteroid.h"
+#include <vector>
 namespace Ui {
 class MainWindow;
 }
@@ -22,6 +24,7 @@ public:
 
 public slots:
     void move();
+    void asteroidSpawner();
 
 private:
     Ui::MainWindow *ui;
@@ -31,6 +34,8 @@ private:
     bool left = false;
     bool right = false;
     bool up = false;
+
+    std::vector<Asteroid*> asteroids;
 };
 
 #endif // MAINWINDOW_H

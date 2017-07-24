@@ -6,7 +6,7 @@
 
 Player::Player()
 {
-
+    setPixmap(QPixmap("player.png"));
 }
 
 void Player::move()
@@ -52,7 +52,6 @@ void Player::accelerate()
     else if (xspeed < -10.0){
         xspeed = -10.0;
     }
-    std::cout << xspeed << std::endl;
 
     yspeed -= acceleration * std::cos(PI/180.00*rotation());
     if (yspeed > 10.0){

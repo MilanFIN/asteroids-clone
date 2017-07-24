@@ -27,12 +27,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     player.cpp \
-    player.cpp
+    player.cpp \
+    asteroid.cpp
 
 HEADERS += \
         mainwindow.h \
     player.h \
-    player.h
+    player.h \
+    asteroid.h
 
 FORMS += \
         mainwindow.ui

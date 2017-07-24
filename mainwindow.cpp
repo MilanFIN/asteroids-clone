@@ -4,6 +4,8 @@
 #include <QMessageBox>
 #include <QkeyEvent>
 #include <QTimer>
+#include "asteroid.h"
+#include <ctime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -30,15 +32,23 @@ MainWindow::MainWindow(QWidget *parent) :
     scene->setBackgroundBrush(QBrush(QColor(0, 0, 0)));
 
     player = new Player;
-    player->setPixmap(QPixmap("player.png"));
     player->setRotation(0);
     scene->addItem(player);
 
 
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(move()));
-    timer->start(20);
+    //init srand to later create asteroids at random locations
+    srand((unsigned)std::time(0));
 
+
+
+    //init timer that causes a signal to apply player movement
+    QTimer *moveTimer = new QTimer(this);
+    connect(moveTimer, SIGNAL(timeout()), this, SLOT(move()));
+    moveTimer->start(20);
+
+    QTimer *asteroidSpawnTimer = new QTimer(this);
+    connect(asteroidSpawnTimer, SIGNAL(timeout()), this, SLOT(asteroidSpawner()));
+    asteroidSpawnTimer->start(100);
 
     //setFocusPolicy(QMainWindow::);
     setFocus();
@@ -76,25 +86,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
         up = false;
     }
 }
-/*
-void MainWindow::keyPressEvent(QKeyEvent *event)
-{
-    int angle = 0;
-    if (event->key() == Qt::Key_Left){
-        angle = -5;
-    }
-    else if (event->key() == Qt::Key_Right){
-        angle = 5;
-    }
-    if (event->key() == Qt::Key_Up){
-        player->accelerate();
-    }
-
-   player->setTransformOriginPoint(5,5);
-   player->setRotation(player->rotation()+angle);
-
-}
-*/
 
 
 
@@ -113,4 +104,25 @@ void MainWindow::move()
         player->accelerate();
     }
     player->move();
+
+
+    for(std::vector<Asteroid*>::iterator i = asteroids.begin(); i != asteroids.end();/* ++i*/) {
+        (*i)->move();
+        if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
+            scene->removeItem(*i);
+            i = asteroids.erase(i);
+            //std::cout << "removed" << std::endl;
+        } else {
+            ++i;
+        }
+    }
+}
+
+void MainWindow::asteroidSpawner()
+{
+    Asteroid* newAsteroid = new Asteroid(0);
+    asteroids.push_back(newAsteroid);
+    scene->addItem(newAsteroid);
+    //std::cout << "spawned" << std::endl;
+
 }
