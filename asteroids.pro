@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     player.cpp \
     player.cpp \
-    asteroid.cpp
+    asteroid.cpp \
+    projectile.cpp
 
 HEADERS += \
         mainwindow.h \
     player.h \
     player.h \
-    asteroid.h
+    asteroid.h \
+    projectile.h
 
 FORMS += \
         mainwindow.ui

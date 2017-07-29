@@ -72,6 +72,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Up){
         up = true;
     }
+    if (event->key() == Qt::Key_Space){
+        space = true;
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
@@ -84,6 +87,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
     }
     if (event->key() == Qt::Key_Up){
         up = false;
+    }
+    if (event->key() == Qt::Key_Space){
+        space = false;
     }
 }
 
@@ -103,6 +109,17 @@ void MainWindow::move()
     if (up){
         player->accelerate();
     }
+
+
+    if (space){
+        /*
+        Asteroid* newAsteroid = new Asteroid(0);
+        asteroids.push_back(newAsteroid);
+        scene->addItem(newAsteroid);
+        */
+    }
+
+
     player->move();
 
 
@@ -111,11 +128,27 @@ void MainWindow::move()
         if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
             scene->removeItem(*i);
             i = asteroids.erase(i);
-            //std::cout << "removed" << std::endl;
+        }
+        else if (player->collidesWithItem((*i))){
+            scene->removeItem(*i);
+            i = asteroids.erase(i);
+
+
+            //player damage trigger goes here.
+
+
         } else {
             ++i;
         }
+
     }
+
+    for (std::vector<Projectile*>::iterator i = projectiles.begin(); i != projectiles.end();){
+        //(*i)->move();
+    }
+
+
+
 }
 
 void MainWindow::asteroidSpawner()

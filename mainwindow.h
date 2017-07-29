@@ -8,6 +8,7 @@
 #include "player.h"
 #include "asteroid.h"
 #include <vector>
+#include "projectile.h"
 namespace Ui {
 class MainWindow;
 }
@@ -34,8 +35,10 @@ private:
     bool left = false;
     bool right = false;
     bool up = false;
+    bool space = false;
 
     std::vector<Asteroid*> asteroids;
+    std::vector<Projectile*> projectiles;
 };
 
 #endif // MAINWINDOW_H
