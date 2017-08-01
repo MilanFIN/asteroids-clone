@@ -10,7 +10,7 @@ Asteroid::Asteroid(int size)
 {
     size_ = size;
     if (size == 0){
-        setPixmap(QPixmap("0.png"));;
+        setPixmap(QPixmap("0.png"));
     }
 
     speed = (rand()%3)+1;

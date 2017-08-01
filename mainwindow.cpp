@@ -97,6 +97,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 
 void MainWindow::move()
 {
+    setFocus(); //in case of clicking something on the background
 
     if (left){
         player->setTransformOriginPoint(5,5);
@@ -112,11 +113,10 @@ void MainWindow::move()
 
 
     if (space){
-        /*
-        Asteroid* newAsteroid = new Asteroid(0);
-        asteroids.push_back(newAsteroid);
-        scene->addItem(newAsteroid);
-        */
+        Projectile* newProjectile = new Projectile(player->x(), player->y(), player->rotation());
+        projectiles.push_back(newProjectile);
+        scene->addItem(newProjectile);
+        space = false;
     }
 
 
@@ -144,18 +144,47 @@ void MainWindow::move()
     }
 
     for (std::vector<Projectile*>::iterator i = projectiles.begin(); i != projectiles.end();){
-        //(*i)->move();
-    }
+        (*i)->move();
+        bool remove = false;
+        for (std::vector<Asteroid*>::iterator j = asteroids.begin(); j != asteroids.end();){
 
+            if ((*i)->collidesWithItem((*j))){
+                //asteroid splitting goes here
+                if ((*j)->size() == 0){
+                    scene->removeItem((*j));
+                    j = asteroids.erase(j);
+                    remove = true;
+                    break;
+                }
+            }
+            else {
+                ++j;
+            }
+
+        }
+        if (remove){
+            scene->removeItem(*i);
+
+            i = projectiles.erase(i);
+        }
+        else if ((*i)->getx() > 210 || (*i)->getx() < -210 || (*i)->gety() > 160 || (*i)->gety() < -160){
+            scene->removeItem(*i);
+            i = projectiles.erase(i);
+        } else{
+            ++i;
+
+        }
+    }
 
 
 }
 
 void MainWindow::asteroidSpawner()
 {
+
     Asteroid* newAsteroid = new Asteroid(0);
     asteroids.push_back(newAsteroid);
     scene->addItem(newAsteroid);
-    //std::cout << "spawned" << std::endl;
+
 
 }

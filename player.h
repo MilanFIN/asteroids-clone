@@ -11,6 +11,7 @@ public:
     Player();
     void accelerate();
     void move();
+
 private:
     int asd;
     float acceleration = 0.10;
