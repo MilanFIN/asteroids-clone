@@ -118,7 +118,7 @@ Asteroid::Asteroid(int size)
 
 }
 
-Asteroid::Asteroid(int size, float x, float y, float angle_of_heading)
+Asteroid::Asteroid(int size, int x, int y, float angle_of_heading)
 {
     size_ = size;
     xlocation = x;

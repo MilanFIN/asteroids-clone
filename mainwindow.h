@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include <QgraphicsItem>
+#include <QGraphicsItem>
 #include "player.h"
 #include "asteroid.h"
 #include <vector>

@@ -7,7 +7,7 @@ class Asteroid : public QGraphicsPixmapItem
 {
 public:
     Asteroid(int size);
-    Asteroid(int size, float x, float y, float angle_of_heading);
+    Asteroid(int size, int x, int y, float angle_of_heading);
     void move();
     int getx();
     int gety();

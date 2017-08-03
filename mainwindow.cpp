@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <QMessageBox>
-#include <QkeyEvent>
+#include <QKeyEvent>
 #include <QTimer>
 #include "asteroid.h"
 #include <ctime>
@@ -149,12 +149,27 @@ void MainWindow::move()
         for (std::vector<Asteroid*>::iterator j = asteroids.begin(); j != asteroids.end();){
 
             if ((*i)->collidesWithItem((*j))){
-                //asteroid splitting goes here
-                if ((*j)->size() == 0){
-                    scene->removeItem((*j));
-                    j = asteroids.erase(j);
-                    remove = true;
+                float tempAngle = (*j)->getAngle();
+                int tempX = (*j)->getx();
+                int tempY = (*j)->gety();
+                int tempSize = (*j)->size();
+                scene->removeItem((*j));
+                j = asteroids.erase(j);
+                remove = true;
+                if (tempSize == 0){
                     break;
+                }
+                if (tempSize > 0){
+                    //add new asteroids to the location of the removed one, directions +-10 degrees
+                    //and location is the same
+                    Asteroid* newAsteroid0 = new Asteroid(tempSize -1, tempX, tempY, tempAngle-10);
+                    asteroids.push_back(newAsteroid0);
+                    scene->addItem(newAsteroid0);
+
+
+                    Asteroid* newAsteroid1 = new Asteroid(tempSize -1, tempX, tempY, tempAngle+10);
+                    asteroids.push_back(newAsteroid1);
+                    scene->addItem(newAsteroid1);
                 }
             }
             else {
