@@ -13,10 +13,6 @@ Asteroid::Asteroid(int size)
         setPixmap(QPixmap("0.png"));
     }
 
-    if (size == 1){
-        setPixmap(QPixmap("1.png"));
-    }
-
     speed = (rand()%3)+1;
 
 
@@ -124,28 +120,14 @@ Asteroid::Asteroid(int size)
 
 Asteroid::Asteroid(int size, int x, int y, float angle_of_heading)
 {
-
     size_ = size;
-    xlocation = float(x);
-    ylocation = float(y);
+    xlocation = x;
+    ylocation = y;
     angle = angle_of_heading;
-    speed = (rand()%3)+1;
-
 
     if (size == 0){
-        setPixmap(QPixmap("0.png"));
-
+        setPixmap(QPixmap("0.png"));;
     }
-
-    if (size == 1){
-        setPixmap(QPixmap("1.png"));
-
-    }
-
-    setPos((int)floor(xlocation), (int)floor(ylocation));
-
-    std::cout << "xloc " << getx() << std::endl;
-
 
 }
 
@@ -158,12 +140,12 @@ void Asteroid::move()
 
 int Asteroid::getx()
 {
-    return int(xlocation);
+    return int(std::floor(xlocation));
 }
 
 int Asteroid::gety()
 {
-    return int(ylocation);
+    return int(std::floor(xlocation));
 }
 
 int Asteroid::size()
