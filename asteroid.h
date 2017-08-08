@@ -17,8 +17,8 @@ private:
     int size_;
     int speed;
     float angle;
-    float xlocation = 0;
-    float ylocation = 0;
+    float xlocation;
+    float ylocation;
 };
 
 #endif // ASTEROID_H

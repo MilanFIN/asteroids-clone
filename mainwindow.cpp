@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QTimer *asteroidSpawnTimer = new QTimer(this);
     connect(asteroidSpawnTimer, SIGNAL(timeout()), this, SLOT(asteroidSpawner()));
-    asteroidSpawnTimer->start(100);
+    asteroidSpawnTimer->start(1000);
 
     //setFocusPolicy(QMainWindow::);
     setFocus();
@@ -123,16 +123,17 @@ void MainWindow::move()
     player->move();
 
 
-    for(std::vector<Asteroid*>::iterator i = asteroids.begin(); i != asteroids.end();/* ++i*/) {
+
+    for(std::vector<Asteroid*>::iterator i = asteroids.begin(); i != asteroids.end();) {
         (*i)->move();
         if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
             scene->removeItem(*i);
             i = asteroids.erase(i);
+
         }
         else if (player->collidesWithItem((*i))){
             scene->removeItem(*i);
             i = asteroids.erase(i);
-
 
             //player damage trigger goes here.
 
@@ -142,6 +143,7 @@ void MainWindow::move()
         }
 
     }
+
 
     for (std::vector<Projectile*>::iterator i = projectiles.begin(); i != projectiles.end();){
         (*i)->move();
@@ -153,10 +155,12 @@ void MainWindow::move()
                 int tempX = (*j)->getx();
                 int tempY = (*j)->gety();
                 int tempSize = (*j)->size();
+
                 scene->removeItem((*j));
                 j = asteroids.erase(j);
                 remove = true;
                 if (tempSize == 0){
+
                     break;
                 }
                 if (tempSize > 0){
@@ -165,11 +169,12 @@ void MainWindow::move()
                     Asteroid* newAsteroid0 = new Asteroid(tempSize -1, tempX, tempY, tempAngle-10);
                     asteroids.push_back(newAsteroid0);
                     scene->addItem(newAsteroid0);
-
-
                     Asteroid* newAsteroid1 = new Asteroid(tempSize -1, tempX, tempY, tempAngle+10);
                     asteroids.push_back(newAsteroid1);
                     scene->addItem(newAsteroid1);
+
+
+                    break;
                 }
             }
             else {
@@ -179,7 +184,6 @@ void MainWindow::move()
         }
         if (remove){
             scene->removeItem(*i);
-
             i = projectiles.erase(i);
         }
         else if ((*i)->getx() > 210 || (*i)->getx() < -210 || (*i)->gety() > 160 || (*i)->gety() < -160){
@@ -197,7 +201,7 @@ void MainWindow::move()
 void MainWindow::asteroidSpawner()
 {
 
-    Asteroid* newAsteroid = new Asteroid(0);
+    Asteroid* newAsteroid = new Asteroid(1);
     asteroids.push_back(newAsteroid);
     scene->addItem(newAsteroid);
 
