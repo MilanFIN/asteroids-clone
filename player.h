@@ -8,8 +8,11 @@
 class Player : public QGraphicsPixmapItem
 {
 public:
+    //sets up player to the center of the screen
     Player();
+    //adds speed to the direction the player is pointing at
     void accelerate();
+    //moves the player to the direction the speed and angle specify
     void move();
 
 private:

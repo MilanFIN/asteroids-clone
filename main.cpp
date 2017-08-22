@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) Milan Mäkipää 2017
+*/
+
+
 #include "mainwindow.h"
 #include <QApplication>
 

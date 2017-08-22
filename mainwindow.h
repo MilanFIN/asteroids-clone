@@ -1,3 +1,6 @@
+
+
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -27,7 +30,9 @@ public:
     void keyReleaseEvent( QKeyEvent* pEvent );
 
 public slots:
+    //called periodically to cause game object movement and check collisions
     void move();
+    //called periodically to spawn asteroids or homing objects
     void asteroidSpawner();
 
 private:

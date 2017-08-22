@@ -150,7 +150,6 @@ void MainWindow::move()
         (*i)->move();
         bool remove = false;
         for (std::vector<Asteroid*>::iterator j = asteroids.begin(); j != asteroids.end();){
-
             if ((*i)->collidesWithItem((*j))){
                 float tempAngle = (*j)->getAngle();
                 int tempX = (*j)->getx();
@@ -183,6 +182,21 @@ void MainWindow::move()
             }
 
         }
+
+
+        for (std::vector<Homing*>::iterator j = homings.begin(); j != homings.end();){
+            if ((*i)->collidesWithItem((*j))){
+                scene->removeItem((*j));
+                j = homings.erase(j);
+                remove = true;
+            }
+            else {
+                ++j;
+            }
+
+        }
+
+
         if (remove){
             scene->removeItem(*i);
             i = projectiles.erase(i);
@@ -220,21 +234,23 @@ void MainWindow::move()
 
 
 
-
 }
 
 void MainWindow::asteroidSpawner()
 {
 
-    int size = (rand()%2);
+    int size = (rand()%3);
+    if (size < 2){
+        Asteroid* newAsteroid = new Asteroid(size);
+        asteroids.push_back(newAsteroid);
+        scene->addItem(newAsteroid);
+    }
+    else {
+        Homing* newHoming = new Homing(player);
+        homings.push_back(newHoming);
+        scene->addItem(newHoming);
+    }
 
-    Asteroid* newAsteroid = new Asteroid(size);
-    asteroids.push_back(newAsteroid);
-    scene->addItem(newAsteroid);
-
-    Homing* newHoming = new Homing(player);
-    homings.push_back(newHoming);
-    scene->addItem(newHoming);
 
 
 }
