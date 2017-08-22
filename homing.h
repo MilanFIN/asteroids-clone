@@ -16,7 +16,9 @@ private:
     float xlocation;
     float ylocation;
     float angle;
-    int speed;
+    int accel;
+    float xspeed;
+    float yspeed;
 };
 
 #endif // HOMING_H

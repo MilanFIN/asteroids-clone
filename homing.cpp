@@ -11,7 +11,7 @@ Homing::Homing(Player* player)
 
     setPixmap(QPixmap("homing.png"));
 
-    speed = (rand()%3)+1;
+    accel = (rand()%3)+1;
 
 
     int edge = (rand()%4)+1;
@@ -91,6 +91,9 @@ Homing::Homing(Player* player)
     setTransformOriginPoint(20,20);
     setRotation(angle+90);
 
+    xspeed = 0.0;
+    yspeed = 0.0;
+
 }
 
 void Homing::move(Player* player)
@@ -100,18 +103,35 @@ void Homing::move(Player* player)
         angle = atan((ylocation - player->y())/(xlocation - player->x())) * 180/PI;
 
     }
-    else if (player->x() < ylocation){
+    else if (player->x() < xlocation){
         angle = atan((ylocation - player->y())/(xlocation - player->x())) * 180/PI + 180;
 
     }
 
     setRotation(angle+90);
 
-    xlocation += speed*cos(angle*PI/180);
+    xspeed += accel*cos(angle*PI/180);
+    if (xspeed > 1.0){
+        xspeed = 1.0;
+    }
+    if (xspeed < -1.0){
+        xspeed = -1.0;
+    }
 
-    ylocation += speed*sin(angle*PI/180);
+    yspeed += accel*sin(angle*PI/180);
+    if (yspeed > 1.0){
+        yspeed = 1.0;
+    }
+    if (yspeed < -1.0){
+        yspeed = -1.0;
+    }
+
+    xlocation += xspeed;
+
+    ylocation += yspeed;
 
     setPos(xlocation, ylocation);
+
 
 }
 
