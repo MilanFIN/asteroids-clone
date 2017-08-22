@@ -9,6 +9,9 @@
 #include "asteroid.h"
 #include <vector>
 #include "projectile.h"
+#include "homing.h"
+
+
 namespace Ui {
 class MainWindow;
 }
@@ -39,6 +42,7 @@ private:
 
     std::vector<Asteroid*> asteroids;
     std::vector<Projectile*> projectiles;
+    std::vector<Homing*> homings;
 };
 
 #endif // MAINWINDOW_H

@@ -144,7 +144,6 @@ Asteroid::Asteroid(int size, int x, int y, float angle_of_heading)
 
     setPos((int)floor(xlocation), (int)floor(ylocation));
 
-    std::cout << "xloc " << getx() << std::endl;
 
 
 }

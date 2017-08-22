@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <QTimer>
 #include "asteroid.h"
+
 #include <ctime>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -196,14 +197,44 @@ void MainWindow::move()
     }
 
 
+
+    for(std::vector<Homing*>::iterator i = homings.begin(); i != homings.end();) {
+        (*i)->move(player);
+        if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
+            scene->removeItem(*i);
+            i = homings.erase(i);
+
+        }
+        else if (player->collidesWithItem((*i))){
+            scene->removeItem(*i);
+            i = homings.erase(i);
+
+            //player damage trigger goes here.
+
+
+        } else {
+            ++i;
+        }
+
+    }
+
+
+
+
 }
 
 void MainWindow::asteroidSpawner()
 {
 
-    Asteroid* newAsteroid = new Asteroid(1);
+    int size = (rand()%2);
+
+    Asteroid* newAsteroid = new Asteroid(size);
     asteroids.push_back(newAsteroid);
     scene->addItem(newAsteroid);
+
+    Homing* newHoming = new Homing(player);
+    homings.push_back(newHoming);
+    scene->addItem(newHoming);
 
 
 }
