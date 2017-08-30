@@ -4,8 +4,6 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 #include <QTimer>
-#include "asteroid.h"
-
 #include <ctime>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -118,13 +116,18 @@ void MainWindow::move()
         projectiles.push_back(newProjectile);
         scene->addItem(newProjectile);
         space = false;
+
+        Mine* newMine = new Mine(player);
+        mines.push_back(newMine);
+        scene->addItem(newMine);
+
     }
 
 
     player->move();
 
 
-
+    //move asteroids
     for(std::vector<Asteroid*>::iterator i = asteroids.begin(); i != asteroids.end();) {
         (*i)->move();
         if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
@@ -146,9 +149,13 @@ void MainWindow::move()
     }
 
 
+    //move projectiles
     for (std::vector<Projectile*>::iterator i = projectiles.begin(); i != projectiles.end();){
         (*i)->move();
         bool remove = false;
+
+
+        //check for asteroid collisions with projectile
         for (std::vector<Asteroid*>::iterator j = asteroids.begin(); j != asteroids.end();){
             if ((*i)->collidesWithItem((*j))){
                 float tempAngle = (*j)->getAngle();
@@ -183,7 +190,7 @@ void MainWindow::move()
 
         }
 
-
+        //projectile collisions with missiles
         for (std::vector<Homing*>::iterator j = homings.begin(); j != homings.end();){
             if ((*i)->collidesWithItem((*j))){
                 scene->removeItem((*j));
@@ -195,7 +202,6 @@ void MainWindow::move()
             }
 
         }
-
 
         if (remove){
             scene->removeItem(*i);
@@ -212,6 +218,8 @@ void MainWindow::move()
 
 
 
+
+    //move homingmissiles
     for(std::vector<Homing*>::iterator i = homings.begin(); i != homings.end();) {
         (*i)->move(player);
         if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
@@ -225,6 +233,19 @@ void MainWindow::move()
 
             //player damage trigger goes here.
 
+
+        } else {
+            ++i;
+        }
+
+    }
+
+    //move mines
+    for(std::vector<Mine*>::iterator i = mines.begin(); i != mines.end();){
+        (*i)->move();
+        if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000 || (*i)->getAge() > 8){
+            scene->removeItem(*i);
+            i = mines.erase(i);
 
         } else {
             ++i;

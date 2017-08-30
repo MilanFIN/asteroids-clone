@@ -29,14 +29,16 @@ SOURCES += \
     player.cpp \
     asteroid.cpp \
     projectile.cpp \
-    homing.cpp
+    homing.cpp \
+    mine.cpp
 
 HEADERS += \
         mainwindow.h \
     player.h \
     asteroid.h \
     projectile.h \
-    homing.h
+    homing.h \
+    mine.h
 
 FORMS += \
         mainwindow.ui

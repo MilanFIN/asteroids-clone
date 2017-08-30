@@ -13,6 +13,7 @@
 #include <vector>
 #include "projectile.h"
 #include "homing.h"
+#include "mine.h"
 
 
 namespace Ui {
@@ -48,6 +49,7 @@ private:
     std::vector<Asteroid*> asteroids;
     std::vector<Projectile*> projectiles;
     std::vector<Homing*> homings;
+    std::vector<Mine*> mines;
 };
 
 #endif // MAINWINDOW_H
