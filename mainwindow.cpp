@@ -130,18 +130,30 @@ void MainWindow::move()
     //move asteroids
     for(std::vector<Asteroid*>::iterator i = asteroids.begin(); i != asteroids.end();) {
         (*i)->move();
-        if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
+        bool removeAsteroid = false;
+        for (std::vector<Mine*>::iterator j = mines.begin(); j != mines.end();){
+            if ((*i)->collidesWithItem((*j))){ //should no longer cause problems
+                scene->removeItem(*j);
+                j = mines.erase(j);
+                removeAsteroid = true;
+                break;
+            } else {
+                ++j;
+            }
+        }
+
+        if (removeAsteroid){
             scene->removeItem(*i);
             i = asteroids.erase(i);
-
+        }
+        else if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
+            scene->removeItem(*i);
+            i = asteroids.erase(i);
         }
         else if (player->collidesWithItem((*i))){
             scene->removeItem(*i);
             i = asteroids.erase(i);
-
             //player damage trigger goes here.
-
-
         } else {
             ++i;
         }
@@ -222,10 +234,26 @@ void MainWindow::move()
     //move homingmissiles
     for(std::vector<Homing*>::iterator i = homings.begin(); i != homings.end();) {
         (*i)->move(player);
-        if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
+        //check if the missile collides with any mines
+        bool removeHoming = false;
+        for (std::vector<Mine*>::iterator j = mines.begin(); j != mines.end();){
+            if ((*i)->collidesWithItem((*j))){
+                scene->removeItem(*j);
+                j = mines.erase(j);
+                removeHoming = true;
+                break;
+            } else {
+                ++j;
+            }
+        }
+
+        if (removeHoming){
             scene->removeItem(*i);
             i = homings.erase(i);
-
+        }
+        else if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
+            scene->removeItem(*i);
+            i = homings.erase(i);
         }
         else if (player->collidesWithItem((*i))){
             scene->removeItem(*i);
