@@ -49,7 +49,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(asteroidSpawnTimer, SIGNAL(timeout()), this, SLOT(asteroidSpawner()));
     asteroidSpawnTimer->start(1000);
 
-    //setFocusPolicy(QMainWindow::);
     setFocus();
 
 
@@ -143,8 +142,22 @@ void MainWindow::move()
         }
 
         if (removeAsteroid){
+            float tempAngle = (*i)->getAngle();
+            int tempX = (*i)->getx();
+            int tempY = (*i)->gety();
+            int tempSize = (*i)->size();
             scene->removeItem(*i);
             i = asteroids.erase(i);
+            if (tempSize > 0){
+                //add new asteroids to the location of the removed one, directions +-10 degrees
+                //and location is the same
+                Asteroid* newAsteroid0 = new Asteroid(tempSize -1, tempX, tempY, tempAngle-10);
+                asteroids.push_back(newAsteroid0);
+                scene->addItem(newAsteroid0);
+                Asteroid* newAsteroid1 = new Asteroid(tempSize -1, tempX, tempY, tempAngle+10);
+                asteroids.push_back(newAsteroid1);
+                scene->addItem(newAsteroid1);
+            }
         }
         else if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
             scene->removeItem(*i);

@@ -30,7 +30,8 @@ SOURCES += \
     asteroid.cpp \
     projectile.cpp \
     homing.cpp \
-    mine.cpp
+    mine.cpp \
+    hud.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,7 +39,8 @@ HEADERS += \
     asteroid.h \
     projectile.h \
     homing.h \
-    mine.h
+    mine.h \
+    hud.h
 
 FORMS += \
         mainwindow.ui

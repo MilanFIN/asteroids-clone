@@ -8,8 +8,8 @@
 class Mine : public QGraphicsPixmapItem
 {
 public:
-    //creates the mine to the location of the player
     Mine();
+    //creates the mine to the location of the player
     Mine(Player* player);
     //moves the item
     void move();
