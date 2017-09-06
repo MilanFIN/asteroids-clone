@@ -14,6 +14,7 @@
 #include "projectile.h"
 #include "homing.h"
 #include "mine.h"
+#include "hud.h"
 
 
 namespace Ui {
@@ -40,16 +41,20 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     Player *player;
+    Hud* hud;
 
+    //variables to store keypress states, true if pressed
     bool left = false;
     bool right = false;
     bool up = false;
     bool space = false;
+    bool control = false;
 
     std::vector<Asteroid*> asteroids;
     std::vector<Projectile*> projectiles;
     std::vector<Homing*> homings;
     std::vector<Mine*> mines;
+
 };
 
 #endif // MAINWINDOW_H

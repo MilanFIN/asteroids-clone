@@ -35,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
     scene->addItem(player);
 
 
+    hud = new Hud(scene);
+
+
+
     //init srand to later create asteroids at random locations
     srand((unsigned)std::time(0));
 
@@ -73,6 +77,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Space){
         space = true;
     }
+    if (event->key() == Qt::Key_Control){
+        control = true;
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
@@ -88,6 +95,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
     }
     if (event->key() == Qt::Key_Space){
         space = false;
+    }
+    if (event->key() == Qt::Key_Control){
+        control = false;
     }
 }
 
@@ -115,13 +125,14 @@ void MainWindow::move()
         projectiles.push_back(newProjectile);
         scene->addItem(newProjectile);
         space = false;
+    }
+    if (control){
 
         Mine* newMine = new Mine(player);
         mines.push_back(newMine);
         scene->addItem(newMine);
-
+        control = false;
     }
-
 
     player->move();
 
@@ -133,6 +144,7 @@ void MainWindow::move()
         for (std::vector<Mine*>::iterator j = mines.begin(); j != mines.end();){
             if ((*i)->collidesWithItem((*j))){ //should no longer cause problems
                 scene->removeItem(*j);
+                delete *j;
                 j = mines.erase(j);
                 removeAsteroid = true;
                 break;
@@ -147,6 +159,7 @@ void MainWindow::move()
             int tempY = (*i)->gety();
             int tempSize = (*i)->size();
             scene->removeItem(*i);
+            delete *i;
             i = asteroids.erase(i);
             if (tempSize > 0){
                 //add new asteroids to the location of the removed one, directions +-10 degrees
@@ -161,12 +174,16 @@ void MainWindow::move()
         }
         else if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
             scene->removeItem(*i);
+            delete *i;
             i = asteroids.erase(i);
         }
         else if (player->collidesWithItem((*i))){
             scene->removeItem(*i);
+            delete *i;
+
             i = asteroids.erase(i);
             //player damage trigger goes here.
+
         } else {
             ++i;
         }
@@ -189,6 +206,7 @@ void MainWindow::move()
                 int tempSize = (*j)->size();
 
                 scene->removeItem((*j));
+                delete *j;
                 j = asteroids.erase(j);
                 remove = true;
                 if (tempSize == 0){
@@ -219,6 +237,7 @@ void MainWindow::move()
         for (std::vector<Homing*>::iterator j = homings.begin(); j != homings.end();){
             if ((*i)->collidesWithItem((*j))){
                 scene->removeItem((*j));
+                delete *j;
                 j = homings.erase(j);
                 remove = true;
             }
@@ -230,10 +249,12 @@ void MainWindow::move()
 
         if (remove){
             scene->removeItem(*i);
+            delete *i;
             i = projectiles.erase(i);
         }
         else if ((*i)->getx() > 210 || (*i)->getx() < -210 || (*i)->gety() > 160 || (*i)->gety() < -160){
             scene->removeItem(*i);
+            delete *i;
             i = projectiles.erase(i);
         } else{
             ++i;
@@ -252,6 +273,7 @@ void MainWindow::move()
         for (std::vector<Mine*>::iterator j = mines.begin(); j != mines.end();){
             if ((*i)->collidesWithItem((*j))){
                 scene->removeItem(*j);
+                delete *j;
                 j = mines.erase(j);
                 removeHoming = true;
                 break;
@@ -262,14 +284,17 @@ void MainWindow::move()
 
         if (removeHoming){
             scene->removeItem(*i);
+            delete *i;
             i = homings.erase(i);
         }
         else if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000){
             scene->removeItem(*i);
+            delete *i;
             i = homings.erase(i);
         }
         else if (player->collidesWithItem((*i))){
             scene->removeItem(*i);
+            delete *i;
             i = homings.erase(i);
 
             //player damage trigger goes here.
@@ -286,6 +311,7 @@ void MainWindow::move()
         (*i)->move();
         if ((*i)->getx() > 1000 || (*i)->getx() < -1000 || (*i)->gety() > 1000 || (*i)->gety() < -1000 || (*i)->getAge() > 8){
             scene->removeItem(*i);
+            delete *i;
             i = mines.erase(i);
 
         } else {
