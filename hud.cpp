@@ -35,17 +35,29 @@ Hud::Hud(QGraphicsScene *scene_)
 
 void Hud::reset()
 {
+    hudBars.at(0)->setVisible(true);
+    hudBars.at(1)->setVisible(true);
+    hudBars.at(2)->setVisible(true);
+    hudBars.at(3)->setVisible(true);
     gameover = false;
-    health = 5;
+    health = 4;
 }
 
 void Hud::hit()
 {
-    if (health <= 1){
-        gameover = true;
+    --health;
+    if (health == 3){
+        hudBars.at(3)->setVisible(false);
     }
-    else {
-        --health;
+    else if (health == 2){
+        hudBars.at(2)->setVisible(false);
+    }
+    else if (health == 1){
+        hudBars.at(1)->setVisible(false);
+    }
+    else if (health == 0){
+        hudBars.at(0)->setVisible(false);
+        gameover = true;
     }
 }
 

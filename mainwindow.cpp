@@ -183,6 +183,8 @@ void MainWindow::move()
 
             i = asteroids.erase(i);
             //player damage trigger goes here.
+            hud->hit();
+
 
         } else {
             ++i;
@@ -296,9 +298,8 @@ void MainWindow::move()
             scene->removeItem(*i);
             delete *i;
             i = homings.erase(i);
-
             //player damage trigger goes here.
-
+            hud->hit();
 
         } else {
             ++i;
