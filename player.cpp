@@ -43,6 +43,14 @@ void Player::move()
 
 }
 
+void Player::resetPos()
+{
+    setRotation(0);
+    xspeed = 0;
+    yspeed = 0;
+    setPos(0,0);
+}
+
 void Player::accelerate()
 {
     xspeed += acceleration * std::sin(PI/180.00*rotation());

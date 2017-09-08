@@ -36,8 +36,13 @@ public slots:
     void move();
     //called periodically to spawn asteroids or homing objects
     void asteroidSpawner();
+    //-
+    void allowFire();
 
 private:
+    //clears asteroids,mines,homings and projectiles from the scene and corresponding vectors
+    void removeObjects();
+
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     Player *player;
@@ -49,6 +54,8 @@ private:
     bool up = false;
     bool space = false;
     bool control = false;
+    bool spaceRead = false;
+
 
     std::vector<Asteroid*> asteroids;
     std::vector<Projectile*> projectiles;

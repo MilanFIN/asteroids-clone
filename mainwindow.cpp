@@ -22,11 +22,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 
     // The bounding rectangle of the scene
-    // The scene rectangle defines the extent of the scene.
-    // It is primarily used by QGraphicsView
-    // to determine the view's default scrollable area,
-    // and by QGraphicsScene to manage item indexing.
-
     scene->setSceneRect(-200, -150, 398, 298);
     scene->setBackgroundBrush(QBrush(QColor(0, 0, 0)));
 
@@ -52,6 +47,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QTimer *asteroidSpawnTimer = new QTimer(this);
     connect(asteroidSpawnTimer, SIGNAL(timeout()), this, SLOT(asteroidSpawner()));
     asteroidSpawnTimer->start(1000);
+
+    QTimer *firingTimer = new QTimer(this);
+    connect(firingTimer, SIGNAL(timeout()), this, SLOT(allowFire()));
+    firingTimer->start(100);
 
     setFocus();
 
@@ -80,6 +79,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Control){
         control = true;
     }
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return){
+        //reset gamestate to start
+        hud->reset();
+        player->resetPos();
+        removeObjects();
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
@@ -107,32 +112,37 @@ void MainWindow::move()
 {
     setFocus(); //in case of clicking something on the background
 
-    if (left){
-        player->setTransformOriginPoint(5,5);
-        player->setRotation(player->rotation()-5);
-    }
-    if (right){
-        player->setTransformOriginPoint(5,5);
-        player->setRotation(player->rotation()+5);
-    }
-    if (up){
-        player->accelerate();
+
+    if (!hud->gameOver()){
+        if (left){
+            player->setTransformOriginPoint(5,5);
+            player->setRotation(player->rotation()-5);
+        }
+        if (right){
+            player->setTransformOriginPoint(5,5);
+            player->setRotation(player->rotation()+5);
+        }
+        if (up){
+            player->accelerate();
+        }
+
+        if (space && !spaceRead){
+            Projectile* newProjectile = new Projectile(player->x(), player->y(), player->rotation());
+            projectiles.push_back(newProjectile);
+            scene->addItem(newProjectile);
+            space = false;
+            spaceRead = true;
+        }
+        if (control){
+
+            Mine* newMine = new Mine(player);
+            mines.push_back(newMine);
+            scene->addItem(newMine);
+            control = false;
+        }
+
     }
 
-
-    if (space){
-        Projectile* newProjectile = new Projectile(player->x(), player->y(), player->rotation());
-        projectiles.push_back(newProjectile);
-        scene->addItem(newProjectile);
-        space = false;
-    }
-    if (control){
-
-        Mine* newMine = new Mine(player);
-        mines.push_back(newMine);
-        scene->addItem(newMine);
-        control = false;
-    }
 
     player->move();
 
@@ -342,4 +352,36 @@ void MainWindow::asteroidSpawner()
 
 
 
+}
+
+void MainWindow::allowFire()
+{
+    spaceRead = false;
+}
+
+void MainWindow::removeObjects()
+{
+    for (auto i = projectiles.begin(); i != projectiles.end();++i){
+        scene->removeItem(*i);
+        delete *i;
+    }
+    projectiles.clear();
+
+    for (auto i = mines.begin(); i != mines.end();++i){
+        scene->removeItem(*i);
+        delete *i;
+    }
+    mines.clear();
+
+    for (auto i = asteroids.begin(); i != asteroids.end();++i){
+        scene->removeItem(*i);
+        delete *i;
+    }
+    asteroids.clear();
+
+    for (auto i = homings.begin(); i != homings.end();++i){
+        scene->removeItem(*i);
+        delete *i;
+    }
+    homings.clear();
 }

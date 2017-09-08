@@ -14,6 +14,7 @@ public:
     void accelerate();
     //moves the player to the direction the speed and angle specify
     void move();
+    void resetPos();
 
 private:
     int asd;
