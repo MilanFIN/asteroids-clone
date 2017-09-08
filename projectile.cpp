@@ -4,7 +4,7 @@
 
 Projectile::Projectile(int x, int y, int angle_)
 {
-    setPixmap(QPixmap("projectile.png"));
+    setPixmap(QPixmap("./data/projectile.png"));
     xlocation = x;
     ylocation = y;
     angle = angle_-90;

@@ -9,7 +9,7 @@ Homing::Homing(Player* player)
 {
 
 
-    setPixmap(QPixmap("homing.png"));
+    setPixmap(QPixmap("./data/homing.png"));
 
     accel = (rand()%3)+1;
     accel = (float)accel/20.0;

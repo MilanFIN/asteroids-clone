@@ -14,7 +14,7 @@ Mine::Mine(Player *player)
 
     initTime = time(0);
 
-    setPixmap(QPixmap("mine.png"));
+    setPixmap(QPixmap("./data/mine.png"));
 
     setPos(player->x(), player->y());
     xspeed = initSpeed*cos((player->rotation()+90)*PI/180);

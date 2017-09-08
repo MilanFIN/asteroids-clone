@@ -6,7 +6,7 @@
 
 Player::Player()
 {
-    setPixmap(QPixmap("player.png"));
+    setPixmap(QPixmap("./data/player.png"));
 }
 
 void Player::move()
